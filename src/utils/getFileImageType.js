@@ -7,7 +7,7 @@ const imageTypes = {
 
 const getFileImageType = (type) => {
 	if (typeof type !== "string") return false;
-	console.log("type :>> ", type);
+
 	const parts = type.toLowerCase().split("/");
 	const extension = imageTypes[parts[parts.length - 1]];
 	return extension ? extension : false;

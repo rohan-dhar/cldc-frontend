@@ -50,7 +50,7 @@ const RouteRenderer = memo(({ loggedIn, loggedOut, children, path }) => {
 		if (user) {
 			return children;
 		} else if (loading) {
-			return <Loader />;
+			return <Loader className="loader" />;
 		} else if (error && !error.logout) {
 			return (
 				<ErrorPage>

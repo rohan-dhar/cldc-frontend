@@ -1,18 +1,11 @@
-import {
-	Button,
-	Card,
-	Group,
-	Image,
-	NavLink,
-	Text,
-	Title,
-} from "@mantine/core";
+import { Button, Card, Loader, NavLink, Text, Title } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import genClassName from "../../utils/genClassNames";
 import { BiHome } from "react-icons/bi";
 import { BsFolder2Open } from "react-icons/bs";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgMathPlus } from "react-icons/cg";
+import ModalImage from "react-modal-image";
 
 import { IoIosTimer } from "react-icons/io";
 
@@ -38,7 +31,15 @@ const navOptions = [
 	{ text: "Memories", icon: <IoIosTimer />, to: "/memories" },
 ];
 
-export const AuthPage = ({ className, children, title, AddModal, ...rest }) => {
+export const AuthPage = ({
+	className,
+	children,
+	title,
+	AddModal = null,
+	onAdd,
+	loading = false,
+	...rest
+}) => {
 	const { pathname } = useLocation();
 	const { user, setUser } = useIdentity();
 
@@ -54,8 +55,6 @@ export const AuthPage = ({ className, children, title, AddModal, ...rest }) => {
 	const handleModalClose = useCallback(() => {
 		setModalOpen(false);
 	}, []);
-
-	console.log("user :>> ", user);
 
 	return (
 		<Page className={"auth-page"} {...rest}>
@@ -95,29 +94,71 @@ export const AuthPage = ({ className, children, title, AddModal, ...rest }) => {
 			</aside>
 			<main className="auth-page-main">
 				<Title className="auth-page-main-title">{title}</Title>
-				{children}
-				{!!AddModal && (
-					<Button
-						className="auth-page-main-add"
-						onClick={() => setModalOpen(true)}
-					>
-						<CgMathPlus />
-					</Button>
+				{loading ? (
+					<Loader className="loader auth-page-loader" />
+				) : (
+					<>
+						{children}
+						{!!AddModal && (
+							<Button
+								className="auth-page-main-add"
+								onClick={() => setModalOpen(true)}
+							>
+								<CgMathPlus />
+							</Button>
+						)}
+					</>
 				)}
 			</main>
-			{<AddModal opened={modalOpen} onClose={handleModalClose} />}
+			{AddModal && (
+				<AddModal onAdd={onAdd} opened={modalOpen} onClose={handleModalClose} />
+			)}
 		</Page>
 	);
 };
 
-export const ImageTile = ({ src, name, className, ...rest }) => {
+export const ImageTile = ({ src, name, className, height, ...rest }) => {
 	return (
 		<section
 			className={genClassName({ base: "image-tile", additional: className })}
 			{...rest}
 		>
-			<img src={src} alt="" />
+			<ModalImage
+				small={src}
+				large={src}
+				className="image-tile-image"
+				alt={name}
+				style={height ? { height } : {}}
+			/>
+
 			<p>{name}</p>
+		</section>
+	);
+};
+
+export const ImageTiles = ({
+	images,
+	className = "",
+	imageHeight,
+	minWidth,
+	...rest
+}) => {
+	return (
+		<section
+			className={genClassName({ base: "image-tiles", additional: className })}
+			style={{
+				gridTemplateColumns: `repeat(auto-fit, minmax(${minWidth}, 1fr))`,
+			}}
+			{...rest}
+		>
+			{images.map((image) => (
+				<ImageTile
+					height={imageHeight}
+					key={image.src}
+					src={image.src}
+					name={image.name}
+				/>
+			))}
 		</section>
 	);
 };

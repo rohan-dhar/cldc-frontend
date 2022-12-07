@@ -5,3 +5,4 @@ export const FETCH_USER_URL = BASE_AUTH_URL + "auth/user/";
 export const BASE_IMAGES_URL = "http://localhost:6542/";
 export const START_IMAGE_UPLOAD_URL = BASE_IMAGES_URL + "images/startUpload/";
 export const SAVE_IMAGE_URL = BASE_IMAGES_URL + "images/";
+export const FETCH_IMAGES_URL = BASE_IMAGES_URL + "images/";

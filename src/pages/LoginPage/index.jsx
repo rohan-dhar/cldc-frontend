@@ -49,7 +49,7 @@ const LoginPage = () => {
 					account already, we will create a new account for you.
 				</Title>
 				{loading ? (
-					<Loader />
+					<Loader className="loader" />
 				) : (
 					<>
 						<GoogleLogin

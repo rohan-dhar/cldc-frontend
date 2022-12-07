@@ -10,6 +10,7 @@
 	align-items: center;
 	justify-content: center;
 	color: var(--theme-1);
+	border: 2px dashed var(--theme-1);
 }
 
 .upload-images-dropzone-active {
@@ -21,25 +22,6 @@
 	font-size: 2.5rem;
 }
 
-.upload-images-modal-previews {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	margin-bottom: 25px;
-}
-
-.upload-images-modal-preview {
-	width: calc(48%);
-	text-overflow: ellipsis;
-	overflow: hidden;
-	flex: 0 0 auto;
-}
-
 .upload-images-modal-action {
 	margin-top: 8px;
-}
-
-.upload-images-modal-loader {
-	margin: auto;
-	display: block;
 }

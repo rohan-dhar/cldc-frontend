@@ -8,12 +8,13 @@ import { SAVE_IMAGE_URL, START_IMAGE_UPLOAD_URL } from "../../../conf/urls";
 import useResource from "../../../hooks/useResource";
 import genClassName from "../../../utils/genClassNames";
 import getFileImageType from "../../../utils/getFileImageType";
-import { ImageTile } from "../../ui";
+import { ImageTiles } from "../../ui";
 import "./upload-images-modal.css";
 
-const UploadImagesModal = ({ onClose, ...rest }) => {
+const UploadImagesModal = ({ onClose, onAdd, ...rest }) => {
 	const [images, setImages] = useState([]);
 	const [readLoading, setReadLoading] = useState(false);
+	const [fileNames, setFileNames] = useState([]);
 	const readRef = useRef(0);
 
 	const setNewImages = (newImages) => {
@@ -23,6 +24,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 			return newImages;
 		});
 		setReadLoading(false);
+		setFileNames([]);
 	};
 
 	const handleDrop = (files) => {
@@ -46,7 +48,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 				images[index].data = e.target.result;
 				images[index].src = URL.createObjectURL(image.file);
 				delete images[index].file;
-				console.log("images[index].src :>> ", images[index].src);
+
 				readRef.current += 1;
 				if (readRef.current !== images.length) return;
 				setNewImages(images);
@@ -86,8 +88,6 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 		resetSave,
 	] = useResource(savePayload, false);
 
-	const [fileNames, setFileNames] = useState([]);
-
 	useEffect(() => {
 		if (!urlData || !urlData.length) return;
 		setUploadPayload(
@@ -98,7 +98,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 				method: "PUT",
 			}))
 		);
-		setFileNames(urlData.map((file) => file.fileName));
+		setFileNames(urlData.map((file) => file.imageName));
 		resetUploadSession();
 		startUpload();
 	}, [urlData, resetUploadSession, images, startUpload]);
@@ -125,13 +125,14 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 		if (!saveData || !saveData.length) return;
 		setNewImages([]);
 		onClose();
+		onAdd();
 		const uploaded = saveData.length;
 		toast(
 			`Successfully uploaded ${uploaded} image${uploaded !== 1 ? "s" : ""}`,
 			{ type: "success" }
 		);
 		resetSave();
-	}, [saveData, onClose, resetSave]);
+	}, [saveData, onClose, resetSave, onAdd]);
 
 	const clearImages = () => {
 		setNewImages([]);
@@ -145,6 +146,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 			className="upload-images-modal"
 			title="Upload images"
 			onClose={onClose}
+			centered
 		>
 			{images.length === 0 && !loading ? (
 				<section
@@ -166,18 +168,9 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 				</section>
 			) : (
 				<>
-					<section className="upload-images-modal-previews">
-						{images.map((image) => (
-							<ImageTile
-								key={image.name}
-								name={image.name}
-								src={image.src}
-								className="upload-images-modal-preview"
-							/>
-						))}
-					</section>
+					<ImageTiles minWidth="180px" imageHeight="120px" images={images} />
 					{loading ? (
-						<Loader className="upload-images-modal-loader" />
+						<Loader className="loader upload-images-modal-loader" />
 					) : (
 						<>
 							<Button
