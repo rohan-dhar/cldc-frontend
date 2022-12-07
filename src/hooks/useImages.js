@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { AWS_S3_BUCKET, AWS_S3_REGION } from "../conf";
+
 import { FETCH_IMAGES_URL } from "../conf/urls";
+import genImageSrc from "../utils/genImageSrc";
 import useResource from "./useResource";
 
 const useImages = () => {
@@ -14,10 +15,10 @@ const useImages = () => {
 		setImages(
 			data.map((image) => ({
 				...image,
-				src: `https://${AWS_S3_BUCKET}.s3.${AWS_S3_REGION}.amazonaws.com/${image.fileName}`,
+				src: genImageSrc(image),
 			}))
 		);
-		reset(data);
+		reset();
 	}, [data, reset]);
 
 	return { loading, error, images, setImages, reload };

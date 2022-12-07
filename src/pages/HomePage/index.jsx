@@ -8,7 +8,6 @@ import "./home-page.css";
 const HomePage = () => {
 	const { loading, error, images, reload } = useImages();
 
-	console.log("images :>> ", images);
 	return (
 		<AuthPage
 			onAdd={reload}
