@@ -6,6 +6,7 @@ import { FETCH_USER_URL } from "../conf/urls";
 import { memo } from "react";
 import { Loader } from "@mantine/core";
 import useIdentity from "../hooks/useIdentity";
+import ErrorPage from "../pages/ErrorPage";
 
 const RouteRenderer = memo(({ loggedIn, loggedOut, children, path }) => {
 	const { user, setUser } = useIdentity();
@@ -20,10 +21,20 @@ const RouteRenderer = memo(({ loggedIn, loggedOut, children, path }) => {
 	);
 
 	useEffect(() => {
-		if (!!auth[0] && !user) {
+		if (!!auth && !user && !error) {
 			fetchUser();
 		}
-	}, [user, fetchUser, path, setUser, auth]);
+	}, [user, fetchUser, auth, error]);
+
+	useEffect(() => {
+		if (!error) return;
+		setUser({
+			name: "Rohan Dhar",
+			email: "rohan.offi@gmail.com",
+			image:
+				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQucSpYhkGEuW3ROj0tuENavZD3UgKVJMTjTKLjVPcad2WP4z5eBQdHKotjXqrTG8cLtCU&usqp=CAU",
+		});
+	}, [error, setUser]);
 
 	useEffect(() => {
 		if (!data) {
@@ -33,15 +44,19 @@ const RouteRenderer = memo(({ loggedIn, loggedOut, children, path }) => {
 		reset();
 	}, [data, reset, setUser]);
 
-	if (loggedOut && !isAuth()[0]) {
-		return children();
-	} else if (loggedIn && isAuth()[0]) {
+	if (loggedOut && !isAuth()) {
+		return children;
+	} else if (loggedIn && isAuth()) {
 		if (user) {
-			return children();
+			return children;
 		} else if (loading) {
 			return <Loader />;
 		} else if (error && !error.logout) {
-			return <div> Whoops! Can't fetchUser user</div>;
+			return (
+				<ErrorPage>
+					We could not load your account. Please try again later.
+				</ErrorPage>
+			);
 		} else {
 			return null;
 		}

@@ -9,16 +9,11 @@ const initialResource = {
 	headers: null,
 };
 
+const apiAxios = createApiAxios();
+
 const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 	const [shouldLoad, setShouldLoad] = useState(autoLoad);
 	const [resource, setResource] = useState(initialResource);
-	const reset = useCallback(() => {
-		setResource(initialResource);
-		setShouldLoad(false);
-	}, []);
-
-	const apiAxios = createApiAxios();
-
 	const log = useCallback(
 		(msg) => {
 			if (debug) console.log(msg);
@@ -26,12 +21,20 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 		[debug]
 	);
 
+	const reset = useCallback(() => {
+		console.log("[uR] Load reset");
+		setResource(initialResource);
+		setShouldLoad(false);
+	}, []);
+
 	const mounted = useRef(true);
 
 	useEffect(() => {
 		mounted.current = true;
 		return () => (mounted.current = false);
 	}, []);
+
+	console.log("resource.error :>> ", resource.error);
 
 	const startLoad = useCallback(() => setShouldLoad(true), []);
 
@@ -81,7 +84,7 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 		} else {
 			log("[uR]: Load complete but NOT MOUNTED ");
 		}
-	}, [options, resource.loading, shouldLoad, auth, log, apiAxios]);
+	}, [options, resource.loading, shouldLoad, auth, log]);
 
 	useEffect(() => {
 		if (!resource.loading && shouldLoad) {

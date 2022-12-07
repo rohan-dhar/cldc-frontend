@@ -7,36 +7,38 @@ import { Route } from "react-router-dom";
 const routesData = [
 	{
 		path: "/",
-		page: RootPage,
+		Page: RootPage,
 		props: { loggedIn: true, loggedOut: true },
 		routeProps: {},
 	},
 	{
 		path: "/home",
-		page: HomePage,
+		Page: HomePage,
 		props: { loggedIn: true },
 		routeProps: {},
 	},
 	{
 		path: "/login",
-		page: LoginPage,
+		Page: LoginPage,
 		props: { loggedOut: true },
 		routeProps: {},
 	},
 ];
 
-const routes = routesData.map(({ path, page, props, routeProps }) => (
-	<Route
-		path={path}
-		exact={true}
-		{...routeProps}
-		key={path}
-		element={
-			<RouteRenderer path={path} {...props}>
-				{page}
-			</RouteRenderer>
-		}
-	/>
-));
+const routes = routesData.map(({ path, Page, props, routeProps }) => {
+	return (
+		<Route
+			path={path}
+			exact={true}
+			{...routeProps}
+			key={path}
+			element={
+				<RouteRenderer path={path} {...props}>
+					<Page />
+				</RouteRenderer>
+			}
+		/>
+	);
+});
 
 export default routes;

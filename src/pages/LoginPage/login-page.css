@@ -1,0 +1,25 @@
+.login-page {
+	background-image: var(--bg-gradient);
+	justify-content: center;
+}
+
+.login-page-title {
+	margin-bottom: 8px;
+}
+
+.login-page-card {
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+	margin-left: 5vh;
+}
+
+.login-page-heading {
+	color: var(--dark-5);
+	font-weight: 500;
+	margin-bottom: 25px;
+}
+
+.login-page-error {
+	margin-top: 25px;
+}

@@ -1,0 +1,45 @@
+.upload-images-dropzone {
+	height: 300px;
+	width: 100%;
+	border-radius: 10px;
+	background-color: var(--light-blue-1);
+	margin-top: 15px;
+	transition: background 0.2s, color 0.2s;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--theme-1);
+}
+
+.upload-images-dropzone-active {
+	background-color: var(--theme-1) !important;
+	color: var(--light-1) !important;
+}
+
+.upload-images-dropzone > span {
+	font-size: 2.5rem;
+}
+
+.upload-images-modal-previews {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 25px;
+}
+
+.upload-images-modal-preview {
+	width: calc(48%);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	flex: 0 0 auto;
+}
+
+.upload-images-modal-action {
+	margin-top: 8px;
+}
+
+.upload-images-modal-loader {
+	margin: auto;
+	display: block;
+}
