@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { TbDragDrop } from "react-icons/tb";
-import { START_IMAGE_UPLOAD_URL } from "../../../conf/urls";
+import { toast } from "react-toastify";
+import { SAVE_IMAGE_URL, START_IMAGE_UPLOAD_URL } from "../../../conf/urls";
 import useResource from "../../../hooks/useResource";
 import genClassName from "../../../utils/genClassNames";
 import getFileImageType from "../../../utils/getFileImageType";
@@ -71,6 +72,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 	);
 
 	const [uploadPayload, setUploadPayload] = useState([]);
+	const [savePayload, setSavePayload] = useState([]);
 
 	const [
 		{ loading: uploadLoading, data: uploadData, error: uploadError },
@@ -78,26 +80,64 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 		resetUpload,
 	] = useResource(uploadPayload, false, false);
 
+	const [
+		{ loading: saveLoading, data: saveData, error: saveError },
+		save,
+		resetSave,
+	] = useResource(savePayload, false);
+
+	const [fileNames, setFileNames] = useState([]);
+
 	useEffect(() => {
-		if (!urlData) return;
+		if (!urlData || !urlData.length) return;
 		setUploadPayload(
 			images.map((image, index) => ({
 				headers: { "Content-Type": image.contentType },
 				url: urlData[index].uploadUrl,
 				data: image.data,
+				method: "PUT",
 			}))
 		);
+		setFileNames(urlData.map((file) => file.fileName));
 		resetUploadSession();
 		startUpload();
 	}, [urlData, resetUploadSession, images, startUpload]);
 
-	console.log("uploadData :>> ", uploadData);
+	useEffect(() => {
+		if (!uploadData || !uploadData.length) return;
+		setSavePayload(
+			images.map((image, index) => ({
+				url: SAVE_IMAGE_URL,
+				data: {
+					name: image.name,
+					fileName: fileNames[index],
+					metadata: {},
+					location: "",
+				},
+				method: "POST",
+			}))
+		);
+		resetUpload();
+		save();
+	}, [save, resetUpload, images, startUpload, fileNames, uploadData]);
+
+	useEffect(() => {
+		if (!saveData || !saveData.length) return;
+		setNewImages([]);
+		onClose();
+		const uploaded = saveData.length;
+		toast(
+			`Successfully uploaded ${uploaded} image${uploaded !== 1 ? "s" : ""}`,
+			{ type: "success" }
+		);
+		resetSave();
+	}, [saveData, onClose, resetSave]);
 
 	const clearImages = () => {
 		setNewImages([]);
 	};
 
-	const loading = urlLoading || readLoading || uploadLoading;
+	const loading = urlLoading || readLoading || uploadLoading || saveLoading;
 
 	return (
 		<Modal
@@ -157,7 +197,7 @@ const UploadImagesModal = ({ onClose, ...rest }) => {
 							>
 								Upload
 							</Button>
-							{(uploadError || urlError) && (
+							{(uploadError || urlError || saveError) && (
 								<Alert color={"red"} title="Could not upload images">
 									We could not upload your images. Please try again later.
 								</Alert>

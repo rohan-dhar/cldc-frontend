@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import tokenStorage from "../../utils/tokenStorage";
 import useIdentity from "../../hooks/useIdentity";
 import { useState } from "react";
+import { useCallback } from "react";
 
 export const Page = ({ className, ...rest }) => {
 	return (
@@ -50,6 +51,9 @@ export const AuthPage = ({ className, children, title, AddModal, ...rest }) => {
 	};
 
 	const [modalOpen, setModalOpen] = useState(false);
+	const handleModalClose = useCallback(() => {
+		setModalOpen(false);
+	}, []);
 
 	console.log("user :>> ", user);
 
@@ -101,7 +105,7 @@ export const AuthPage = ({ className, children, title, AddModal, ...rest }) => {
 					</Button>
 				)}
 			</main>
-			{<AddModal opened={modalOpen} onClose={() => setModalOpen(false)} />}
+			{<AddModal opened={modalOpen} onClose={handleModalClose} />}
 		</Page>
 	);
 };
