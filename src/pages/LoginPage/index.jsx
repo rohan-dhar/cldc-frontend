@@ -1,6 +1,6 @@
 import { Alert, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { LOGIN_URL } from "../../conf/urls";
 import useResource from "../../hooks/useResource";
@@ -14,7 +14,7 @@ const LoginPage = () => {
 	const [formError, setFormError] = useState(null);
 	const [token, setToken] = useState(false);
 
-	const [{ data, loading, error }, login, resetLogin] = useResource(
+	const [{ data, loading, error }, login] = useResource(
 		{ url: LOGIN_URL, method: "POST", data: { value: { google_jwt: token } } },
 		false,
 		false
@@ -58,6 +58,7 @@ const LoginPage = () => {
 							onError={handleError}
 							useOneTap
 							shape="pill"
+							theme="filled_blue"
 						/>
 						{(error || formError) && (
 							<Alert color={"red"} title="Oops" className="login-page-error">

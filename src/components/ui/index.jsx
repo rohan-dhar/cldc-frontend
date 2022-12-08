@@ -1,13 +1,9 @@
 import { Button, Card, Loader, NavLink, Text, Title } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import genClassName from "../../utils/genClassNames";
-import { BiHome } from "react-icons/bi";
-import { BsFolder2Open } from "react-icons/bs";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgMathPlus } from "react-icons/cg";
 import ModalImage from "react-modal-image";
-
-import { IoIosTimer } from "react-icons/io";
 
 import "./ui.css";
 import { useLocation } from "react-router-dom";
@@ -15,6 +11,7 @@ import tokenStorage from "../../utils/tokenStorage";
 import useIdentity from "../../hooks/useIdentity";
 import { useState } from "react";
 import { useCallback } from "react";
+import { routesData } from "../../routes";
 
 export const Page = ({ className, ...rest }) => {
 	return (
@@ -24,12 +21,6 @@ export const Page = ({ className, ...rest }) => {
 		/>
 	);
 };
-
-const navOptions = [
-	{ text: "Home", icon: <BiHome />, to: "/home" },
-	{ text: "Albums", icon: <BsFolder2Open />, to: "/albums" },
-	{ text: "Memories", icon: <IoIosTimer />, to: "/memories" },
-];
 
 export const AuthPage = ({
 	className,
@@ -62,16 +53,18 @@ export const AuthPage = ({
 				<Title className="auth-page-aside-logo">Oceane.</Title>
 				<main>
 					<nav>
-						{navOptions.map(({ text, icon, to }) => (
-							<NavLink
-								className="auth-page-nav-link"
-								key={to}
-								label={text}
-								icon={icon}
-								active={to === pathname}
-								onClick={() => navigate(to)}
-							/>
-						))}
+						{routesData
+							.filter(({ icon }) => !!icon)
+							.map(({ name, icon, path }) => (
+								<NavLink
+									className="auth-page-nav-link"
+									key={path}
+									label={name}
+									icon={icon}
+									active={path === pathname}
+									onClick={() => navigate(path)}
+								/>
+							))}
 					</nav>
 					<Card shadow={"md"}>
 						<section className="auth-page-aside-profile">

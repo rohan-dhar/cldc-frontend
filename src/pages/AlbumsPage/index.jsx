@@ -2,7 +2,6 @@ import { Alert } from "@mantine/core";
 import CreateAlbumModal from "../../components/modals/CreateAlbumModal";
 import { AuthPage, ImageTiles } from "../../components/ui";
 import useAlbums from "../../hooks/useAlbums";
-import useImages from "../../hooks/useImages";
 
 import "./albums-page.css";
 

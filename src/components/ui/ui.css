@@ -136,7 +136,8 @@ body {
 .auth-page-main {
 	width: 100%;
 	margin-top: var(--page-aside-padding);
-	padding: var(--page-aside-padding);
+	padding: var(--page-aside-padding) calc(2 * var(--page-aside-padding))
+		var(--page-aside-padding) var(--page-aside-padding);
 	position: relative;
 }
 

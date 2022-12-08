@@ -38,16 +38,23 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 
 	const startLoad = useCallback(() => setShouldLoad(true), []);
 
+	const controllerRef = useRef(null);
+
 	const load = useCallback(async () => {
 		log("[uR]: Load called ");
-		if (
-			resource.loading ||
-			!shouldLoad ||
-			(!Array.isArray(options) && !options?.url)
-		) {
+		if (!shouldLoad || (!Array.isArray(options) && !options?.url)) {
 			log("[uR]: Load stopped ");
 			return;
 		}
+
+		if (resource.loading) {
+			if (Array.isArray(controllerRef.current)) {
+				controllerRef.current.forEach((controller) => controller.abort());
+			} else if (controllerRef.current) controllerRef.current.abort();
+
+			log("[uR]: Aborted previous call ");
+		}
+
 		log("[uR]: Load started ");
 		setShouldLoad(false);
 		let resp;
@@ -57,9 +64,23 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 
 		try {
 			if (multiple) {
-				resp = await Promise.all(options.map((req) => axiosInstance(req)));
+				const controllers = [];
+				for (let i = 0; i < options.length; ++i)
+					controllers.push(new AbortController());
+
+				controllerRef.current = controllers;
+				resp = await Promise.all(
+					options.map((req, index) =>
+						axiosInstance({ ...req, controller: controllers[index].signal })
+					)
+				);
 			} else {
-				resp = await axiosInstance(options);
+				const controller = new AbortController();
+				controllerRef.current = controller;
+				resp = await axiosInstance({
+					...options,
+					controller: controller.signal,
+				});
 			}
 		} catch (error) {
 			log("[uR]: Load error! ");
@@ -70,6 +91,8 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 				headers: null,
 			});
 		}
+
+		controllerRef.current = null;
 
 		if (mounted.current) {
 			log("[uR]: Load complete: " + options.url);

@@ -5,7 +5,12 @@ import LoginPage from "./pages/LoginPage";
 import { Route } from "react-router-dom";
 import AlbumsPage from "./pages/AlbumsPage";
 
-const routesData = [
+import { BiHome, BiSearchAlt } from "react-icons/bi";
+import { BsFolder2Open } from "react-icons/bs";
+import { IoIosTimer } from "react-icons/io";
+import SearchPage from "./pages/SearchPage";
+
+export const routesData = [
 	{
 		path: "/",
 		Page: RootPage,
@@ -20,13 +25,37 @@ const routesData = [
 	},
 	{
 		path: "/home",
+		name: "Home",
+		icon: <BiHome />,
+
 		Page: HomePage,
 		props: { loggedIn: true },
 		routeProps: {},
 	},
 	{
 		path: "/albums",
+		name: "Albums",
+		icon: <BsFolder2Open />,
+
 		Page: AlbumsPage,
+		props: { loggedIn: true },
+		routeProps: {},
+	},
+	{
+		path: "/search",
+		Page: SearchPage,
+		name: "Search",
+		icon: <BiSearchAlt />,
+
+		props: { loggedIn: true },
+		routeProps: {},
+	},
+	{
+		path: "/memories",
+		Page: HomePage,
+		name: "Memories",
+		icon: <IoIosTimer />,
+
 		props: { loggedIn: true },
 		routeProps: {},
 	},

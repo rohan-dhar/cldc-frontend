@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { FETCH_ALBUMS_URL, FETCH_IMAGES_URL } from "../conf/urls";
+import { FETCH_ALBUMS_URL } from "../conf/urls";
 
 import useResource from "./useResource";
 
@@ -19,6 +19,10 @@ const useAlbums = () => {
 		);
 		reset();
 	}, [data, reset]);
+
+	useEffect(() => {
+		console.log("albums here :>> ");
+	}, [error]);
 
 	return { loading, error, albums, setAlbums, reload };
 };
