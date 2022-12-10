@@ -9,6 +9,7 @@ import { BiHome, BiSearchAlt } from "react-icons/bi";
 import { BsFolder2Open } from "react-icons/bs";
 import { IoIosTimer } from "react-icons/io";
 import SearchPage from "./pages/SearchPage";
+import AlbumDetailPage from "./pages/AlbumDetailPage.jsx";
 
 export const routesData = [
 	{
@@ -21,6 +22,13 @@ export const routesData = [
 		path: "/login",
 		Page: LoginPage,
 		props: { loggedOut: true },
+		routeProps: {},
+	},
+	{
+		path: "/album/:albumId",
+		Page: AlbumDetailPage,
+
+		props: { loggedIn: true },
 		routeProps: {},
 	},
 	{

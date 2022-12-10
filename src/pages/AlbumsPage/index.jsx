@@ -1,4 +1,5 @@
 import { Alert } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import CreateAlbumModal from "../../components/modals/CreateAlbumModal";
 import { AuthPage, ImageTiles } from "../../components/ui";
 import useAlbums from "../../hooks/useAlbums";
@@ -8,7 +9,7 @@ import "./albums-page.css";
 const AlbumsPage = () => {
 	const { loading, error, albums, reload } = useAlbums();
 
-	console.log("albums :>> ", albums);
+	const navigate = useNavigate();
 
 	return (
 		<AuthPage
@@ -19,8 +20,9 @@ const AlbumsPage = () => {
 		>
 			{Array.isArray(albums) && albums.length ? (
 				<ImageTiles
-					albums={albums}
-					mapper={(albums) => ({ name: albums.name, src: albums.cover })}
+					imageModalMode={false}
+					onClick={(id) => navigate(`/album/${id}`)}
+					images={albums}
 				/>
 			) : error ? (
 				<Alert title="Oops" color={"red"}>

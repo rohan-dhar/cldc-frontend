@@ -1,5 +1,5 @@
 import { Button, Card, Loader, NavLink, Text, Title } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import genClassName from "../../utils/genClassNames";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgMathPlus } from "react-icons/cg";
@@ -9,13 +9,20 @@ import "./ui.css";
 import { useLocation } from "react-router-dom";
 import tokenStorage from "../../utils/tokenStorage";
 import useIdentity from "../../hooks/useIdentity";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { useCallback } from "react";
 import { routesData } from "../../routes";
+import { IoChevronBack } from "react-icons/io5";
+import anim from "../../conf/anim";
+
+const motionProps = { initial: "initial", animate: "animate", exit: "exit" };
 
 export const Page = ({ className, ...rest }) => {
 	return (
-		<main
+		<motion.main
+			variants={anim.page}
+			{...motionProps}
 			className={genClassName({ base: "page", additional: className })}
 			{...rest}
 		/>
@@ -26,6 +33,8 @@ export const AuthPage = ({
 	className,
 	children,
 	title,
+	backText = null,
+	backTo = null,
 	AddModal = null,
 	onAdd,
 	loading = false,
@@ -49,7 +58,7 @@ export const AuthPage = ({
 
 	return (
 		<Page className={"auth-page"} {...rest}>
-			<aside className="auth-page-aside">
+			<motion.aside className="auth-page-aside">
 				<Title className="auth-page-aside-logo">Oceane.</Title>
 				<main>
 					<nav>
@@ -84,9 +93,21 @@ export const AuthPage = ({
 						</Button>
 					</Card>
 				</main>
-			</aside>
+			</motion.aside>
 			<main className="auth-page-main">
-				<Title className="auth-page-main-title">{title}</Title>
+				<Title className="auth-page-main-title">
+					<>
+						{backText && (
+							<Link className="auth-page-main-back" to={backTo}>
+								<span>
+									<IoChevronBack />
+								</span>{" "}
+								{backText}
+							</Link>
+						)}
+						{title}
+					</>
+				</Title>
 				{loading ? (
 					<Loader className="loader auth-page-loader" />
 				) : (
@@ -110,19 +131,39 @@ export const AuthPage = ({
 	);
 };
 
-export const ImageTile = ({ src, name, className, height, ...rest }) => {
+export const ImageTile = ({
+	src,
+	name,
+	className,
+	height,
+	imageModalMode = true,
+	id,
+	onClick,
+	...rest
+}) => {
 	return (
 		<section
 			className={genClassName({ base: "image-tile", additional: className })}
+			onClick={!imageModalMode ? () => onClick(id) : null}
 			{...rest}
 		>
-			<ModalImage
-				small={src}
-				large={src}
-				className="image-tile-image"
-				alt={name}
-				style={height ? { height } : {}}
-			/>
+			{imageModalMode ? (
+				<ModalImage
+					small={src}
+					large={src}
+					className="image-tile-image"
+					alt={name}
+					style={height ? { height } : {}}
+					showRotate
+				/>
+			) : (
+				<img
+					small={src}
+					className="image-tile-image"
+					alt={name}
+					style={height ? { height } : {}}
+				/>
+			)}
 
 			<p>{name}</p>
 		</section>
@@ -134,8 +175,11 @@ export const ImageTiles = ({
 	className = "",
 	imageHeight,
 	minWidth,
+	imageModalMode,
+	onClick,
 	...rest
 }) => {
+	console.log("images :>> ", images);
 	return (
 		<section
 			className={genClassName({ base: "image-tiles", additional: className })}
@@ -144,14 +188,19 @@ export const ImageTiles = ({
 			}}
 			{...rest}
 		>
-			{images.map((image) => (
-				<ImageTile
-					height={imageHeight}
-					key={image.src}
-					src={image.src}
-					name={image.name}
-				/>
-			))}
+			{Array.isArray(images)
+				? images.map((image) => (
+						<ImageTile
+							height={imageHeight}
+							key={image.src}
+							src={image.src}
+							name={image.name}
+							imageModalMode={imageModalMode}
+							onClick={onClick}
+							id={image.id}
+						/>
+				  ))
+				: null}
 		</section>
 	);
 };

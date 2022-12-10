@@ -28,7 +28,7 @@ const SearchPage = () => {
 
 	useEffect(() => {
 		if (!data) return;
-		setResults(data);
+		setResults(data.images);
 		reset();
 	}, [data, reset]);
 

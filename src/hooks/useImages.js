@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { FETCH_IMAGES_URL } from "../conf/urls";
-import genImageSrc from "../utils/genImageSrc";
+import genImageS3Src from "../utils/genImageS3Src";
 import useResource from "./useResource";
 
 const useImages = () => {
@@ -15,7 +15,7 @@ const useImages = () => {
 		setImages(
 			data.map((image) => ({
 				...image,
-				src: genImageSrc(image),
+				src: genImageS3Src(image),
 			}))
 		);
 		reset();

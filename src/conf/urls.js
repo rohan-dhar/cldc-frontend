@@ -9,5 +9,6 @@ export const FETCH_IMAGES_URL = BASE_IMAGES_URL + "images/";
 
 export const CREATE_ALBUM_URL = BASE_IMAGES_URL + "albums/create/";
 export const FETCH_ALBUMS_URL = BASE_IMAGES_URL + "albums/";
+export const FETCH_ALBUM_URL = (id) => BASE_IMAGES_URL + `albums/${id}`;
 
 export const MAKE_SEARCH_URL = (value) => BASE_IMAGES_URL + `search/${value}`;

@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { GOOGLE_CLIENT_ID } from "./conf";
 import routes from "./routes";
+import { AnimatePresence } from "framer-motion";
 
 const App = () => {
 	return (
@@ -18,15 +19,9 @@ const App = () => {
 			>
 				<UserManager>
 					<Router>
-						<Routes>{routes}</Routes>
-						{/* <Routes>
-							<Route
-								path={"/xyz"}
-								exact={true}
-								key={"/xyz"}
-								element={<RouteRenderer path={"/"}>{"hello"}</RouteRenderer>}
-							/>
-						</Routes> */}
+						<AnimatePresence>
+							<Routes>{routes}</Routes>
+						</AnimatePresence>
 					</Router>
 					<ToastContainer autoClose={3000} newestOnTop draggable />
 				</UserManager>
