@@ -21,26 +21,17 @@ const RouteRenderer = memo(({ loggedIn, loggedOut, children, path }) => {
 	);
 
 	useEffect(() => {
-		if (!!auth && !user && !error) {
+		if (!!auth && !user && !error && loggedIn) {
 			fetchUser();
 		}
-	}, [user, fetchUser, auth, error]);
-
-	useEffect(() => {
-		if (!error) return;
-		setUser({
-			name: "Rohan Dhar",
-			email: "rohan.offi@gmail.com",
-			image:
-				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQucSpYhkGEuW3ROj0tuENavZD3UgKVJMTjTKLjVPcad2WP4z5eBQdHKotjXqrTG8cLtCU&usqp=CAU",
-		});
-	}, [error, setUser]);
+	}, [user, fetchUser, auth, error, loggedIn]);
 
 	useEffect(() => {
 		if (!data) {
 			return;
 		}
-		setUser(data);
+		console.log("data.data :>> ", data.data);
+		setUser(data.data);
 		reset();
 	}, [data, reset, setUser]);
 

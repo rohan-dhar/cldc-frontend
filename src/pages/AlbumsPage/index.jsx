@@ -6,17 +6,17 @@ import useAlbums from "../../hooks/useAlbums";
 
 import "./albums-page.css";
 
-const AlbumsPage = () => {
-	const { loading, error, albums, reload } = useAlbums();
+const AlbumsPage = ({ shared = false }) => {
+	const { loading, error, albums, reload } = useAlbums(shared);
 
 	const navigate = useNavigate();
 
 	return (
 		<AuthPage
-			onAdd={reload}
+			onAdd={!shared ? reload : undefined}
 			loading={loading}
-			AddModal={CreateAlbumModal}
-			title="Albums"
+			AddModal={!shared ? CreateAlbumModal : undefined}
+			title={shared ? "Shared with me" : "Albums"}
 		>
 			{Array.isArray(albums) && albums.length ? (
 				<ImageTiles

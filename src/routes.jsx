@@ -7,6 +7,7 @@ import AlbumsPage from "./pages/AlbumsPage";
 
 import { BiHome, BiSearchAlt } from "react-icons/bi";
 import { BsFolder2Open } from "react-icons/bs";
+import { GrShareOption } from "react-icons/gr";
 import { IoIosTimer } from "react-icons/io";
 import SearchPage from "./pages/SearchPage";
 import AlbumDetailPage from "./pages/AlbumDetailPage.jsx";
@@ -14,19 +15,19 @@ import AlbumDetailPage from "./pages/AlbumDetailPage.jsx";
 export const routesData = [
 	{
 		path: "/",
-		Page: RootPage,
+		page: <RootPage />,
 		props: { loggedIn: true, loggedOut: true },
 		routeProps: {},
 	},
 	{
 		path: "/login",
-		Page: LoginPage,
+		page: <LoginPage />,
 		props: { loggedOut: true },
 		routeProps: {},
 	},
 	{
 		path: "/album/:albumId",
-		Page: AlbumDetailPage,
+		page: <AlbumDetailPage />,
 
 		props: { loggedIn: true },
 		routeProps: {},
@@ -36,7 +37,7 @@ export const routesData = [
 		name: "Home",
 		icon: <BiHome />,
 
-		Page: HomePage,
+		page: <HomePage />,
 		props: { loggedIn: true },
 		routeProps: {},
 	},
@@ -45,13 +46,22 @@ export const routesData = [
 		name: "Albums",
 		icon: <BsFolder2Open />,
 
-		Page: AlbumsPage,
+		page: <AlbumsPage />,
+		props: { loggedIn: true },
+		routeProps: {},
+	},
+	{
+		path: "/sharedAlbums",
+		name: "Shared with me",
+		icon: <GrShareOption />,
+
+		page: <AlbumsPage key="shared-albums-page" shared />,
 		props: { loggedIn: true },
 		routeProps: {},
 	},
 	{
 		path: "/search",
-		Page: SearchPage,
+		page: <SearchPage />,
 		name: "Search",
 		icon: <BiSearchAlt />,
 
@@ -60,7 +70,7 @@ export const routesData = [
 	},
 	{
 		path: "/memories",
-		Page: HomePage,
+		page: <HomePage />,
 		name: "Memories",
 		icon: <IoIosTimer />,
 
@@ -69,7 +79,7 @@ export const routesData = [
 	},
 ];
 
-const routes = routesData.map(({ path, Page, props, routeProps }) => {
+const routes = routesData.map(({ path, page, props, routeProps }) => {
 	return (
 		<Route
 			path={path}
@@ -78,7 +88,7 @@ const routes = routesData.map(({ path, Page, props, routeProps }) => {
 			key={path}
 			element={
 				<RouteRenderer path={path} {...props}>
-					<Page />
+					{page}
 				</RouteRenderer>
 			}
 		/>

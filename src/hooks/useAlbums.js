@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { FETCH_ALBUMS_URL } from "../conf/urls";
+import { FETCH_ALBUMS_URL, FETCH_SHARED_ALBUMS_URL } from "../conf/urls";
 import genImageS3Src from "../utils/genImageS3Src";
 
 import useResource from "./useResource";
 
-const useAlbums = () => {
+const useAlbums = (shared) => {
 	const [{ loading, error, data }, reload, reset] = useResource({
-		url: FETCH_ALBUMS_URL,
+		url: shared ? FETCH_SHARED_ALBUMS_URL : FETCH_ALBUMS_URL,
 	});
 	const [albums, setAlbums] = useState([]);
 

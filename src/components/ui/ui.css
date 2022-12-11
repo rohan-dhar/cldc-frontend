@@ -53,7 +53,7 @@ body {
 }
 
 .mantine-Alert-root {
-	margin-top: 15px;
+	margin: 15px 0;
 	box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
 }
 .mantine-Modal-modal {
@@ -174,7 +174,12 @@ body {
 	margin-bottom: 25px;
 }
 
-.auth-page-main-back {
+.auth-page-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.auth-page-header-back {
 	font-size: 1.2rem;
 	font-weight: 500;
 	text-transform: uppercase;
@@ -190,15 +195,18 @@ body {
 	transition: background-color 0.2s;
 }
 
-.auth-page-main-back:hover {
+.auth-page-header-back:hover {
 	background-color: rgba(0, 0, 0, 0.04);
 }
 
-.auth-page-main-back span {
+.auth-page-header-back span {
 	position: relative;
 	top: 3px;
 }
 
+.auth-page-header-actions > * {
+	margin-right: 10px;
+}
 .image-tile {
 	border-radius: 5px;
 	overflow: hidden;

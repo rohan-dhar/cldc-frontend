@@ -32,3 +32,13 @@
 	top: 50%;
 	transform: translateY(-50%);
 }
+
+.search-page-count {
+	margin-bottom: 20px;
+	color: var(--dark-3);
+	font-weight: 500;
+}
+
+.search-page-count span {
+	color: var(--theme-3);
+}

@@ -24,6 +24,21 @@ const anim = {
 			transition: easeInTransitionFactory(0.6),
 		},
 	},
+	imageTile: {
+		scale: 0.95,
+		opacity: 0.8,
+		transition: easeInTransitionFactory(0.6),
+	},
+	animate: {
+		scale: 1,
+		opacity: 1,
+		transition: easeInTransitionFactory(0.6),
+	},
+	exit: {
+		scale: 0.95,
+		opacity: 0.8,
+		transition: easeInTransitionFactory(0.6),
+	},
 };
 
 export default anim;

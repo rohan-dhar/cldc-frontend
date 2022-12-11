@@ -1,4 +1,4 @@
-import { Alert, Button, Loader, Modal } from "@mantine/core";
+import { Alert, Button, Modal } from "@mantine/core";
 import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -169,33 +169,30 @@ const UploadImagesModal = ({ onClose, onAdd, ...rest }) => {
 			) : (
 				<>
 					<ImageTiles minWidth="180px" imageHeight="120px" images={images} />
-					{loading ? (
-						<Loader className="loader upload-images-modal-loader" />
-					) : (
-						<>
-							<Button
-								className="upload-images-modal-action"
-								fullWidth
-								variant="outline"
-								color={"red"}
-								onClick={clearImages}
-							>
-								Clear all
-							</Button>
-							<Button
-								className="upload-images-modal-action"
-								fullWidth
-								variant="gradient"
-								onClick={startUploadSession}
-							>
-								Upload
-							</Button>
-							{(uploadError || urlError || saveError) && (
-								<Alert color={"red"} title="Could not upload images">
-									We could not upload your images. Please try again later.
-								</Alert>
-							)}
-						</>
+
+					<Button
+						className="upload-images-modal-action"
+						fullWidth
+						variant="outline"
+						color={"red"}
+						onClick={clearImages}
+						disabled={loading}
+					>
+						Clear all
+					</Button>
+					<Button
+						className="upload-images-modal-action"
+						fullWidth
+						variant="gradient"
+						onClick={startUploadSession}
+						loading={loading}
+					>
+						Upload
+					</Button>
+					{(uploadError || urlError || saveError) && (
+						<Alert color={"red"} title="Could not upload images">
+							We could not upload your images. Please try again later.
+						</Alert>
 					)}
 				</>
 			)}

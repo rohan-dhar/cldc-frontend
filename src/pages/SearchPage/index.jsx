@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
-import { AuthPage } from "../../components/ui";
+import { AuthPage, ImageTiles } from "../../components/ui";
 import { MAKE_SEARCH_URL } from "../../conf/urls";
 import useResource from "../../hooks/useResource";
 import genClassName from "../../utils/genClassNames";
+import genImageS3Src from "../../utils/genImageS3Src";
 import "./search-page.css";
 
 const SEARCH_THROTTLE_DELAY = 200;
@@ -28,7 +29,12 @@ const SearchPage = () => {
 
 	useEffect(() => {
 		if (!data) return;
-		setResults(data.images);
+		setResults(
+			data.images.map((image) => ({
+				...image,
+				src: genImageS3Src(image.fileName),
+			}))
+		);
 		reset();
 	}, [data, reset]);
 
@@ -78,7 +84,13 @@ const SearchPage = () => {
 					We could not search for images right now. Please try again later.
 				</Alert>
 			) : results.length > 0 ? (
-				`Found ${results.length} results`
+				<>
+					<section className="search-page-count">
+						Found <span>{results.length}</span> image
+						{results.length === 1 ? "" : "s"}
+					</section>
+					<ImageTiles images={results} />
+				</>
 			) : null}
 		</AuthPage>
 	);

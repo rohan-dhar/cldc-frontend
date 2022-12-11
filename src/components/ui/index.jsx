@@ -9,7 +9,7 @@ import "./ui.css";
 import { useLocation } from "react-router-dom";
 import tokenStorage from "../../utils/tokenStorage";
 import useIdentity from "../../hooks/useIdentity";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useCallback } from "react";
 import { routesData } from "../../routes";
@@ -38,6 +38,7 @@ export const AuthPage = ({
 	AddModal = null,
 	onAdd,
 	loading = false,
+	actions = null,
 	...rest
 }) => {
 	const { pathname } = useLocation();
@@ -77,7 +78,7 @@ export const AuthPage = ({
 					</nav>
 					<Card shadow={"md"}>
 						<section className="auth-page-aside-profile">
-							<img src={user.image} alt="" />
+							<img src={user.picture} alt="" />
 							<main>
 								<Title order={5}>{user.name}</Title>
 								<Text color={"gray.5"}>{user.email}</Text>
@@ -95,19 +96,23 @@ export const AuthPage = ({
 				</main>
 			</motion.aside>
 			<main className="auth-page-main">
-				<Title className="auth-page-main-title">
-					<>
+				{backText || actions ? (
+					<header className="auth-page-header">
 						{backText && (
-							<Link className="auth-page-main-back" to={backTo}>
+							<Link className="auth-page-header-back" to={backTo}>
 								<span>
 									<IoChevronBack />
 								</span>{" "}
 								{backText}
 							</Link>
 						)}
-						{title}
-					</>
-				</Title>
+						{actions && (
+							<section className="auth-page-header-actions">{actions}</section>
+						)}
+					</header>
+				) : null}
+
+				<Title className="auth-page-main-title">{title}</Title>
 				{loading ? (
 					<Loader className="loader auth-page-loader" />
 				) : (
@@ -137,14 +142,18 @@ export const ImageTile = ({
 	className,
 	height,
 	imageModalMode = true,
+	fileName,
 	id,
 	onClick,
 	...rest
 }) => {
 	return (
-		<section
+		<motion.section
 			className={genClassName({ base: "image-tile", additional: className })}
 			onClick={!imageModalMode ? () => onClick(id) : null}
+			layoutId={fileName}
+			variants={anim.imageTile}
+			{...motionProps}
 			{...rest}
 		>
 			{imageModalMode ? (
@@ -158,7 +167,7 @@ export const ImageTile = ({
 				/>
 			) : (
 				<img
-					small={src}
+					src={src}
 					className="image-tile-image"
 					alt={name}
 					style={height ? { height } : {}}
@@ -166,7 +175,7 @@ export const ImageTile = ({
 			)}
 
 			<p>{name}</p>
-		</section>
+		</motion.section>
 	);
 };
 
@@ -179,28 +188,33 @@ export const ImageTiles = ({
 	onClick,
 	...rest
 }) => {
-	console.log("images :>> ", images);
 	return (
-		<section
+		<motion.section
 			className={genClassName({ base: "image-tiles", additional: className })}
+			layout
+			variants={anim.imageTile}
+			{...motionProps}
 			style={{
 				gridTemplateColumns: `repeat(auto-fit, minmax(${minWidth}, 1fr))`,
 			}}
 			{...rest}
 		>
-			{Array.isArray(images)
-				? images.map((image) => (
-						<ImageTile
-							height={imageHeight}
-							key={image.src}
-							src={image.src}
-							name={image.name}
-							imageModalMode={imageModalMode}
-							onClick={onClick}
-							id={image.id}
-						/>
-				  ))
-				: null}
-		</section>
+			<AnimatePresence>
+				{Array.isArray(images)
+					? images.map((image) => (
+							<ImageTile
+								height={imageHeight}
+								key={image.src}
+								src={image.src}
+								name={image.name}
+								imageModalMode={imageModalMode}
+								onClick={onClick}
+								fileName={image.fileName}
+								id={image.id}
+							/>
+					  ))
+					: null}
+			</AnimatePresence>
+		</motion.section>
 	);
 };

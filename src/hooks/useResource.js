@@ -34,8 +34,6 @@ const useResource = (options, autoLoad = true, auth = true, debug = false) => {
 		return () => (mounted.current = false);
 	}, []);
 
-	console.log("resource.error :>> ", resource.error);
-
 	const startLoad = useCallback(() => setShouldLoad(true), []);
 
 	const controllerRef = useRef(null);
