@@ -11,6 +11,11 @@ const AlbumsPage = ({ shared = false }) => {
 
 	const navigate = useNavigate();
 
+	const noAlbumsAlert = 
+		!shared ? 
+		"Looks like you have not created any albums. Upload albums to view them here." : 
+		"Nothing to show here 😪"
+
 	return (
 		<AuthPage
 			onAdd={!shared ? reload : undefined}
@@ -30,8 +35,7 @@ const AlbumsPage = ({ shared = false }) => {
 				</Alert>
 			) : !albums.length ? (
 				<Alert title="No albums found" color={"blue"}>
-					Looks like you have not created any albums. Upload albums to view them
-					here.
+					{noAlbumsAlert}
 				</Alert>
 			) : null}
 		</AuthPage>
