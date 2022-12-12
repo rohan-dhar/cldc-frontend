@@ -45,12 +45,10 @@ const AlbumDetailPage = () => {
 
 	const navigate = useNavigate();
 
-	const {
-		user: { id: userId },
-	} = useIdentity();
+	const {user} = useIdentity();
 
 	const backTo = album
-		? album.userId === userId
+		? album.userId === user.id
 			? "/albums"
 			: "/sharedAlbums"
 		: "/albums";
