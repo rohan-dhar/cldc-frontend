@@ -214,6 +214,7 @@ body {
 	box-shadow: 0px 3px 25px 0px rgba(0, 0, 0, 0.07);
 	transition: box-shadow 0.2s, color 0.2s, background-color 0.2s;
 	cursor: pointer;
+	max-width: 320px;
 }
 
 .image-tile:hover {
