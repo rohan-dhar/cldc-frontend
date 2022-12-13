@@ -45,13 +45,11 @@ const AlbumDetailPage = () => {
 
 	const navigate = useNavigate();
 
-	const {user} = useIdentity();
+	const { user } = useIdentity();
 
-	const backTo = album
-		? album.userId === user.id
-			? "/albums"
-			: "/sharedAlbums"
-		: "/albums";
+	const isSelfAlbum = album && album.userId === user.id;
+
+	const backTo = isSelfAlbum ? "/albums" : "/sharedAlbums";
 
 	useEffect(() => {
 		if (!deleteData) return;
@@ -68,23 +66,25 @@ const AlbumDetailPage = () => {
 			backText={album ? "Back" : null}
 			backTo={backTo}
 			actions={
-				<>
-					<Button
-						leftIcon={<TbSend />}
-						variant="gradient"
-						onClick={() => setShareOpen(true)}
-					>
-						Share
-					</Button>
-					<Button
-						leftIcon={<HiOutlineTrash />}
-						color="red"
-						loading={deleteLoading}
-						onClick={deleteAlbum}
-					>
-						Delete
-					</Button>
-				</>
+				isSelfAlbum ? (
+					<>
+						<Button
+							leftIcon={<TbSend />}
+							variant="gradient"
+							onClick={() => setShareOpen(true)}
+						>
+							Share
+						</Button>
+						<Button
+							leftIcon={<HiOutlineTrash />}
+							color="red"
+							loading={deleteLoading}
+							onClick={deleteAlbum}
+						>
+							Delete
+						</Button>
+					</>
+				) : null
 			}
 		>
 			{error ? (
