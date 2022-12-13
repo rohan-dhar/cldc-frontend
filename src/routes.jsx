@@ -8,7 +8,7 @@ import AlbumsPage from "./pages/AlbumsPage";
 import { BiHome, BiSearchAlt } from "react-icons/bi";
 import { BsFolder2Open } from "react-icons/bs";
 import { GrShareOption } from "react-icons/gr";
-import { IoIosTimer } from "react-icons/io";
+
 import SearchPage from "./pages/SearchPage";
 import AlbumDetailPage from "./pages/AlbumDetailPage.jsx";
 
@@ -64,15 +64,6 @@ export const routesData = [
 		page: <SearchPage />,
 		name: "Search",
 		icon: <BiSearchAlt />,
-
-		props: { loggedIn: true },
-		routeProps: {},
-	},
-	{
-		path: "/memories",
-		page: <HomePage />,
-		name: "Memories",
-		icon: <IoIosTimer />,
 
 		props: { loggedIn: true },
 		routeProps: {},
