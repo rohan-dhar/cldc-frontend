@@ -81,7 +81,7 @@ export const AuthPage = ({
 							<img src={user.picture} alt="" />
 							<main>
 								<Title order={5}>{user.name}</Title>
-								<Text color={"gray.5"}>{user.email}</Text>
+								<Text color={"gray.5"} size={12}>{user.email}</Text>
 							</main>
 						</section>
 						<Button

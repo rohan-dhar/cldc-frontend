@@ -13,7 +13,7 @@ const ShareAlbumModal = ({ onClose, albumId, ...rest }) => {
 	const [formError, setFormError] = useState(null);
 
 	const [{ loading, data, error }, share, reset] = useResource(
-		{ url: SHARE_ALBUM_URL(albumId), method: "GET", data: { email } },
+		{ url: SHARE_ALBUM_URL(albumId), method: "POST", data: { email } },
 		false
 	);
 
